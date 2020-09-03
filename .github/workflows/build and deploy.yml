@@ -1,3 +1,9 @@
+env: 
+AZURE_WEBAPP_NAME: crappy-test-app-from-actions1
+AZURE_WEBAPP_PACKAGE_PATH: './published'
+NETCORE_VERSION: '3.1.103'
+
+
 name: "Build and Deploy"
 
 on: [push, workflow_dispatch]
@@ -13,3 +19,14 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: ${{ env.NETCORE_VERSION }}
+
+
+    - name: Restore
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore -c Release
+
+    - name: Publish
+      run: dotnet publish --no-build -c Release -o ./publish
+
